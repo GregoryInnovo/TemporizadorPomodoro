@@ -13,6 +13,8 @@ var bell = new Audio("bell.mp3");
 var bellWork = new Audio("bellWork.mp3");
 
 var startTimer;
+var sum = false;
+var operacion = 4 - 1;
 
 start.addEventListener("click", function () {
   click_sound.play();
@@ -25,15 +27,18 @@ start.addEventListener("click", function () {
 
 reset.addEventListener("click", function () {
   click_sound.play();
-  wm.innerText = 25;
-  ws.innerText = "00";
+  wm.innerText = 0;
+  ws.innerText = "06";
 
-  bm.innerText = 5;
-  bs.innerText = "00";
+  bm.innerText = 0;
+  bs.innerText = "06";
 
   document.getElementById("counter").innerText = 0;
   stopInterval();
   startTimer = undefined;
+  operacion = 3;
+  sum = false;
+  timer();
 });
 
 stop.addEventListener("click", function () {
@@ -56,8 +61,13 @@ function timer() {
       bs.innerText = 59;
       bm.innerText--;
     }
-    bell.play();
-    /* alert("Descanso"); */
+
+    if (sum == false) {
+      /* alert("Descanso"); */
+      document.getElementById("counter").innerText++;
+      sum = true;
+      bell.play();
+    }
   }
 
   if (
@@ -67,13 +77,26 @@ function timer() {
     bs.innerText == 0
   ) {
     bellWork.play();
-    wm.innerText = 25;
-    ws.innerText = "00";
+    wm.innerText = 0;
+    ws.innerText = "05";
 
-    bm.innerText = 5;
-    bs.innerText = "00";
+    if (document.getElementById("counter").innerText == operacion) {
+      bm.innerText = 0;
+      bs.innerText = "10";
+      if (operacion == 3) {
+        operacion++;
+        operacion = operacion + 4 - 1;
+        /* alert(operacion); */
+      } else {
+        operacion = operacion + 4;
+      }
+    } else {
+      bm.innerText = 0;
+      bs.innerText = "06";
+    }
+    sum = false;
+
     /* alert("Se acabo el Descanso");  */
-    document.getElementById("counter").innerText++;
   }
 }
 
